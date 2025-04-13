@@ -11,6 +11,8 @@ Requirements:
 */
 
 #include <iostream>
+#include <string>
+#include <cctype>
 using namespace std;
 
 // Function Prototypes
@@ -63,19 +65,22 @@ void ShowMenu()
 */
 int GetChoice()
 {
-    int choice;
+    string input;
+    int choice = 0;
 
     cout << "Enter 1 or 2: ";
-    while (!(cin >> choice) || (choice != 1 && choice != 2))
+    getline(cin, input);
+
+    while (input != "1" && input != "2")
     {
-        cout << "ERROR: Please enter a valid number (1 or 2): ";
-        cin.clear();  // Clear the error flag
-        cin.ignore(1000, '\n');  // Discard invalid input
+        cout << "ERROR: Please enter only 1 or 2: ";
+        getline(cin, input);
     }
 
+    // Convert from string to int after validation
+    choice = stoi(input);
     return choice;
 }
-
 
 /*
    PatternA
@@ -113,15 +118,21 @@ void PatternB()
 */
 char GetRepeatChoice()
 {
-    char choice;
-    cout << "\nWould you like to display another pattern? (Y/N): ";
-    cin >> choice;
+    string input;
 
-    while (toupper(choice) != 'Y' && toupper(choice) != 'N')
+    while (true)
     {
-        cout << "ERROR: Enter Y or N: ";
-        cin >> choice;
-    }
+        cout << "\nWould you like to display another pattern? (Y/N): ";
+        getline(cin, input);
 
-    return toupper(choice);
+        if (input.length() == 1)
+        {
+            char c = toupper(input[0]);
+
+            if (c == 'Y' || c == 'N')
+                return c;
+        }
+
+        cout << "ERROR: Please enter only Y or N.\n";
+    }
 }
